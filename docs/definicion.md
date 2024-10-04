@@ -4,3 +4,18 @@ que los usuarios pueden ver las cartas de los demás usuarios de la plataforma,
 seleccionar aquella en la que estén interesados y ofrecer una carta a cambio. Los
 usuarios pueden negociar intercambios, aceptar o rechazar ofertas y realizar un
 siguimiento de sus cartas e intercambios en curso.
+
+
+## Características
+- **Registro y autenticación**: Los usuarios pueden registrarse y autenticarse
+para realizar intercambios.
+
+- **Gestión de cartas**: Los usuarios pueden ver, agregar y eliminar sus cartas.
+
+- **Ofertas de intercambio**: Los usuarios pueden hacer ofertas de intercambio
+por cartas de otros usuarios.
+
+- **Sistema de contraoferta**: Los usuarios pueden aceptar, rechazar o hacer
+contraofertas para mejorar sus propuestas.
+
+- **Historial de intercambios**: Registro de todos los intercambios registrados.
