@@ -19,3 +19,15 @@ por cartas de otros usuarios.
 contraofertas para mejorar sus propuestas.
 
 - **Historial de intercambios**: Registro de todos los intercambios registrados.
+
+
+## Configuración
+Al ser github una herramienta de trabajo habitual para mi, ya tengo configurado
+tanto el perfil (foto, nombre completo, ciudad y universidad), como mi máquina
+local y el doble factor de autenticación.
+
+Credenciales de git en mi terminal:
+![Credenciales](../imgs/github_config.png)
+
+Clave SSH en github:
+![SSH](../imgs/github_ssh.png)
