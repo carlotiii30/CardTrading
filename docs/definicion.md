@@ -38,5 +38,8 @@ Para el desarrollo del proyecto se va a utilizar el lenguaje de programación
 ([TypeScript](https://www.typescriptlang.org)), por la flexibilidad y la
 escalabilidad que ofrece, dando la posibilidad de implementar no solo el backend
 sino también el frontend, con la ayuda de frameworks como ([Vue](https://vuejs.org)).
-Además, para llevar un mayor control de los avances, se usarán issues para cada
-tarea a solucionar y milestones para cada objetivo a corto plazo.
+
+Para llevar un mayor control de los avances, se usarán issues para cada
+tarea a solucionar y milestones para cada objetivo a corto plazo. Además, para
+cada hito definido en la asignatura, se creará un PR en el repositorio, que, una
+vez terminado, será mergeado a la rama main para ser corregido.
