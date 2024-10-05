@@ -31,3 +31,12 @@ Credenciales de git en mi terminal:
 
 Clave SSH en github:
 ![SSH](../imgs/github_ssh.png)
+
+
+## Desarrollo
+Para el desarrollo del proyecto se va a utilizar el lenguaje de programación 
+([TypeScript](https://www.typescriptlang.org)), por la flexibilidad y la
+escalabilidad que ofrece, dando la posibilidad de implementar no solo el backend
+sino también el frontend, con la ayuda de frameworks como ([Vue](https://vuejs.org)).
+Además, para llevar un mayor control de los avances, se usarán issues para cada
+tarea a solucionar y milestones para cada objetivo a corto plazo.
