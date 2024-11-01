@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Variables de entorno
 .env
+
+# Fotos subidas
+backend/uploads/*
