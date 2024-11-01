@@ -104,12 +104,17 @@ export const getUserById = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const { id } = req.query;
+    if (typeof id !== "string") {
+      res.status(400).json({ error: "ID inválido" });
+      return;
+    }
+    const user = await User.findByPk(id);
     if (!user) {
       res.status(404).json({ error: "Usuario no encontrado" });
       return;
     }
-    res.json(user);
+    res.json({ user });
   } catch (error) {
     next(error);
   }

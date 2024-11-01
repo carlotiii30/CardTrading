@@ -1,7 +1,5 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/database";
-import User from "./User";
-import Card from "./Card";
 
 class Trade extends Model {
   public id!: number;

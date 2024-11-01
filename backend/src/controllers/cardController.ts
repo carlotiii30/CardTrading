@@ -12,16 +12,18 @@ export const createCard = async (
       return next(new Error("User not authenticated"));
     }
 
-    const { name, rarity, image, description } = req.query;
+    const { name, type, description } = req.body;
     const userId = req.user.id;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
 
     const card = await Card.create({
-      name: name as string,
-      rarity: rarity as string,
-      image: image as string,
-      description: description as string,
+      name,
+      type,
+      image: imageUrl,
+      description,
       userId,
     });
+
     res.status(201).json(card);
   } catch (error) {
     next(error);
@@ -84,39 +86,6 @@ export const getCardById = async (
   }
 };
 
-// Actualizar una carta por ID
-export const updateCard = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    if (!req.user) {
-      return next(new Error("User not authenticated"));
-    }
-
-    const { name, rarity, image, description } = req.query;
-    const [updated] = await Card.update(
-      {
-        name: name as string,
-        rarity: rarity as string,
-        image: image as string,
-        description: description as string,
-      },
-      { where: { id: req.params.id, userId: req.user.id } }
-    );
-
-    if (updated) {
-      const updatedCard = await Card.findOne({ where: { id: req.params.id } });
-      res.json(updatedCard);
-    } else {
-      res.status(404).send("Card not found");
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-
 // Eliminar una carta por ID
 export const deleteCard = async (
   req: Request,
@@ -129,7 +98,7 @@ export const deleteCard = async (
     }
 
     const deleted = await Card.destroy({
-      where: { id: req.params.id, userId: req.user.id },
+      where: { id: req.query.id, userId: req.user.id },
     });
 
     if (deleted) {

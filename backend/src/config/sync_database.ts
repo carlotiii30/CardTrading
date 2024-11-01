@@ -2,7 +2,7 @@ import { sequelize } from "./database";
 import "../models/index";
 
 sequelize
-  .sync({ alter: true })
+  .sync({ force: true })
   .then(() => {
     console.log("Modelos sincronizados con la base de datos.");
   })

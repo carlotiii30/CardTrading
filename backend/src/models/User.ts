@@ -1,6 +1,5 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/database";
-import Trade from "./Trade";
 
 class User extends Model {
   public id!: number;

@@ -1,11 +1,10 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/database";
-import User from "./User";
 
 class Card extends Model {
   public id!: number;
   public name!: string;
-  public rarity!: string;
+  public type!: string;
   public image!: string;
   public description!: string;
   public userId!: number;
@@ -17,7 +16,7 @@ Card.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    rarity: {
+    type: {
       type: DataTypes.STRING,
       allowNull: false,
     },
