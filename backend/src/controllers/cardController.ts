@@ -67,21 +67,17 @@ export const getCardById = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
-  try {
-    if (!req.user) {
-      return next(new Error("User not authenticated"));
-    }
+) => {
+  const { id } = req.query;
 
-    const card = await Card.findOne({
-      where: { id: req.params.id, userId: req.user.id },
-    });
-    if (card) {
-      res.json(card);
-    } else {
-      res.status(404).send("Card not found");
+  try {
+    const card = await Card.findByPk(id as string);
+    if (!card) {
+      return res.status(404).json({ error: "Carta no encontrada" });
     }
+    res.json(card);
   } catch (error) {
+    console.error("Error al obtener la carta:", error);
     next(error);
   }
 };
@@ -91,22 +87,18 @@ export const deleteCard = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
+) => {
+  const { id } = req.query;
+
   try {
-    if (!req.user) {
-      return next(new Error("User not authenticated"));
+    const card = await Card.findByPk(id as string);
+    if (!card) {
+      return res.status(404).json({ error: "Carta no encontrada" });
     }
-
-    const deleted = await Card.destroy({
-      where: { id: req.query.id, userId: req.user.id },
-    });
-
-    if (deleted) {
-      res.json({ message: "Carta eliminada" });
-    } else {
-      res.status(404).send("Card not found");
-    }
+    await card.destroy();
+    res.status(204).send();
   } catch (error) {
+    console.error("Error al eliminar la carta:", error);
     next(error);
   }
 };

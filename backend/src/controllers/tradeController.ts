@@ -1,8 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Card, Trade, User } from "../models/index";
 import { Op } from "sequelize";
 
-export const requestTrade = async (req: Request, res: Response) => {
+export const requestTrade = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { offeredCardId, requestedCardId } = req.query;
   const offeredUserId = req.user?.id;
 
@@ -51,13 +55,13 @@ export const requestTrade = async (req: Request, res: Response) => {
   }
 };
 
-export const acceptTrade = async (req: Request, res: Response) => {
+export const acceptTrade = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { tradeId } = req.query;
   const tradeIdNumber = Number(tradeId);
-  console.log(`Trade ID: ${tradeId} (type: ${typeof tradeId})`);
-  console.log(
-    `Trade ID Number: ${tradeIdNumber} (type: ${typeof tradeIdNumber})`
-  );
 
   try {
     const trade = await Trade.findByPk(tradeIdNumber, {
@@ -68,7 +72,6 @@ export const acceptTrade = async (req: Request, res: Response) => {
         { model: Card, as: "requestedCard" },
       ],
     });
-    console.log(`Trade: ${trade} (type: ${typeof trade})`);
 
     if (!trade) {
       res.status(404).json({ error: "Intercambio no encontrado" });
@@ -84,13 +87,11 @@ export const acceptTrade = async (req: Request, res: Response) => {
     await trade.save();
 
     const requestCard = await Card.findByPk(trade.requestedCardId);
-    console.log(requestCard);
     if (requestCard) {
       requestCard.userId = trade.offeredUserId;
       await requestCard.save();
     }
     const offeredCard = await Card.findByPk(trade.offeredCardId);
-    console.log(offeredCard);
     if (offeredCard) {
       offeredCard.userId = trade.requestedUserId;
       await offeredCard.save();
