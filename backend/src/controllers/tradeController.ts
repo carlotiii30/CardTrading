@@ -1,8 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Card, Trade, User } from "../models/index";
 import { Op } from "sequelize";
 
-export const requestTrade = async (req: Request, res: Response) => {
+export const requestTrade = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { offeredCardId, requestedCardId } = req.query;
   const offeredUserId = req.user?.id;
 
@@ -24,43 +28,36 @@ export const requestTrade = async (req: Request, res: Response) => {
       return;
     }
 
-    const requestedCard = await Card.findByPk(requestedCardId as string);
-    if (!requestedCard) {
+    const requestCard = await Card.findByPk(requestedCardId as string);
+    if (!requestCard) {
       res.status(404).json({ error: "Carta solicitada no encontrada" });
       return;
     }
 
-    const requestedUserId = requestedCard.userId;
-    const requestedUser = await User.findByPk(requestedUserId);
-    if (!requestedUser) {
-      res.status(404).json({ error: "Usuario solicitado no encontrado" });
-      return;
-    }
-
     const trade = await Trade.create({
-      offeredCardId: offerCard.id,
-      requestedCardId: requestedCard.id,
-      offeredUserId: offeredUser.id,
-      requestedUserId: requestedUser.id,
+      offeredCardId: offeredCardId as string,
+      requestedCardId: requestedCardId as string,
+      offeredUserId,
+      requestedUserId: requestCard.userId,
+      status: "pending",
     });
 
     res.status(201).json(trade);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error al solicitar el intercambio:", error);
-    res.status(500).json({ error: "Error al solicitar el intercambio" });
+    next(error);
   }
 };
 
-export const acceptTrade = async (req: Request, res: Response) => {
+export const acceptTrade = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { tradeId } = req.query;
-  const tradeIdNumber = Number(tradeId);
-  console.log(`Trade ID: ${tradeId} (type: ${typeof tradeId})`);
-  console.log(
-    `Trade ID Number: ${tradeIdNumber} (type: ${typeof tradeIdNumber})`
-  );
 
   try {
-    const trade = await Trade.findByPk(tradeIdNumber, {
+    const trade = await Trade.findByPk(tradeId as string, {
       include: [
         { model: User, as: "offeredUser" },
         { model: User, as: "requestedUser" },
@@ -68,29 +65,26 @@ export const acceptTrade = async (req: Request, res: Response) => {
         { model: Card, as: "requestedCard" },
       ],
     });
-    console.log(`Trade: ${trade} (type: ${typeof trade})`);
 
     if (!trade) {
-      res.status(404).json({ error: "Intercambio no encontrado" });
-      return;
+      return res.status(404).json({ error: "Intercambio no encontrado" });
     }
 
     if (trade.status !== "pending") {
-      res.status(400).json({ error: "El intercambio no está pendiente" });
-      return;
+      return res
+        .status(400)
+        .json({ error: "El intercambio no está pendiente" });
     }
 
     trade.status = "accepted";
     await trade.save();
 
     const requestCard = await Card.findByPk(trade.requestedCardId);
-    console.log(requestCard);
     if (requestCard) {
       requestCard.userId = trade.offeredUserId;
       await requestCard.save();
     }
     const offeredCard = await Card.findByPk(trade.offeredCardId);
-    console.log(offeredCard);
     if (offeredCard) {
       offeredCard.userId = trade.requestedUserId;
       await offeredCard.save();
@@ -99,26 +93,28 @@ export const acceptTrade = async (req: Request, res: Response) => {
     res.json({ message: "Intercambio aceptado y carta actualizada" });
   } catch (error) {
     console.error("Error al aceptar el intercambio:", error);
-    res.status(500).json({ error: "Error al aceptar el intercambio" });
+    next(error);
   }
 };
 
-export const cancelTrade = async (req: Request, res: Response) => {
+export const cancelTrade = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { tradeId } = req.query;
 
   try {
     const trade = await Trade.findByPk(tradeId as string);
-
     if (!trade) {
-      res.status(404).json({ error: "Intercambio no encontrado" });
-      return;
+      return res.status(404).json({ error: "Intercambio no encontrado" });
     }
 
     await trade.destroy();
-
-    res.json({ message: "Intercambio cancelado" });
+    res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: "Error al cancelar el intercambio" });
+    console.error("Error al cancelar el intercambio:", error);
+    next(error);
   }
 };
 

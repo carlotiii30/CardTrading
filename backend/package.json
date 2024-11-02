@@ -1,0 +1,49 @@
+{
+  "name": "CardTrading",
+  "version": "1.0.0",
+  "main": "app.ts",
+  "repository": "git@github.com:carlotiii30/CardTrading.git",
+  "author": "Carlota de la Vega <carlotadlavega@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node --files src/app.ts",
+    "sync": "ts-node src/config/sync_database.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.4",
+    "sequelize-cli": "^6.6.2",
+    "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.7.4",
+    "@types/sequelize": "^4.28.20",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
+    "jest": "^29.7.0",
+    "jest-mock-req-res": "^1.0.2",
+    "rxjs": "^7.8.1",
+    "sequelize-test-helpers": "^1.4.3",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
