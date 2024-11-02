@@ -1,7 +1,6 @@
 import { Op } from "sequelize";
 import { Request, Response, NextFunction } from "express";
 import {
-  requestTrade,
   acceptTrade,
   cancelTrade,
   getTrades,

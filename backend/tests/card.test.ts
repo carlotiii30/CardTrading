@@ -1,10 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  createCard,
-  getAllCards,
-  getCardById,
-  deleteCard,
-} from "../src/controllers/cardController";
+import { createCard, getAllCards } from "../src/controllers/cardController";
 import { Card } from "../src/models";
 import { mockRequest, mockResponse } from "jest-mock-req-res";
 
