@@ -402,3 +402,6 @@ FodyWeavers.xsd
 
 # Fotos subidas
 backend/uploads/*
+
+# Yarn
+yarn.lock
