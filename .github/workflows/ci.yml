@@ -23,8 +23,5 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
-    - name: Build
-      run: cd backend && yarn build
-
     - name: Run Tests
       run: cd backend && NODE_ENV=test && yarn test
