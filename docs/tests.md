@@ -23,8 +23,18 @@ integración con varios frameworks de tests. Sin embargo, debemos tener en cuent
 si el test runner elegido tiene biblioteca de aserciones incluida.
 
 
-### Elección
+## Elección
 Para este proyecto utilizaremos Jest, ya que es especialmente fuerte en
 proyectos basados en TypeScript y cumple con todos los criterios establecidos.
 Además, podemos aprovechar las aserciones integradas que ofrece, asi como su 
 CLI.
+
+
+# Evaluación de los tests
+Aquí podemos ver el runneo de los tests desde la terminal: <br>
+
+![Tests VS](../imgs/tests_vs.png)
+
+Y desde el workflow del último commit: [107ab6f](https://github.com/carlotiii30/CardTrading/commit/107ab6f35d23b36859d4009e963bd2a16bfb353e) <br>
+
+![Tests GitHub](../imgs/tests_git.png)
