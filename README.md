@@ -8,7 +8,7 @@ del proyecto y la configuración del repositorio de GitHub.
 ## Hito 2: Integración Continua
 Con respecto a la parte de documentación...
 La explicación de la elección de los gestores está en [gestores](./docs/gestores.md),
-por otro lado tenemos, las [herramientas de tests](./docs/herramientas_test.md)
+por otro lado tenemos, las [herramientas de tests](./docs/tests.md)
 y el sistema de [integración continua](./docs/integracion_continua.md).
 
 En cuanto a la parte de código...
