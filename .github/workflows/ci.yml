@@ -11,6 +11,16 @@ jobs:
       matrix:
         node-version: ['lts/-1', 'lts/*', 'current']
 
+    services:
+      postgres:
+        image: postgres:14
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ secrets.TEST_DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.TEST_DB_DATABASE }}
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -23,15 +33,26 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
+    - name: Wait for PostgreSQL
+      run: |
+        until nc -z localhost 5432; do
+          echo "Waiting for PostgreSQL..."
+          sleep 1
+        done
+      shell: bash
+
     - name: Set Environment Variables
       env:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
         TEST_DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
         TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
         TEST_DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-        TEST_DB_HOST: ${{ secrets.TEST_DB_HOST }}
-        TEST_DB_PORT: ${{ secrets.TEST_DB_PORT }}
+        TEST_DB_HOST: localhost
+        TEST_DB_PORT: 5432
       run: echo "Environment variables set"
+
+    - name: Run Database Migrations
+      run: cd backend && yarn migrate
 
     - name: Run Tests
       env:
