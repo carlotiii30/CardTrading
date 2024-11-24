@@ -28,7 +28,7 @@ const databaseConfig: { [key: string]: DatabaseConfig } = {
   test: {
     database: process.env.TEST_DB_DATABASE || "pokemon_trading_test",
     username: process.env.TEST_DB_USERNAME || "pokemon_admin",
-    password: process.env.TEST_DB_PASSWORD || "pregunta_al_admin",
+    password: process.env.TEST_DB_PASSWORD || "Pokemon",
     host: process.env.TEST_DB_HOST || "127.0.0.1",
     port: Number(process.env.TEST_DB_PORT) || 5432,
     dialect: "postgres",
