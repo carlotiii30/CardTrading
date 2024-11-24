@@ -12,6 +12,7 @@ interface DatabaseConfig {
   host: string;
   port: number;
   dialect: "postgres";
+  logging: boolean | ((msg: string) => void);
 }
 
 const databaseConfig: { [key: string]: DatabaseConfig } = {
@@ -22,6 +23,7 @@ const databaseConfig: { [key: string]: DatabaseConfig } = {
     host: process.env.DB_HOST || "127.0.0.1",
     port: Number(process.env.DB_PORT) || 5432,
     dialect: "postgres",
+    logging: console.log,
   },
   test: {
     database: process.env.TEST_DB_DATABASE || "pokemon_trading_test",
@@ -30,6 +32,7 @@ const databaseConfig: { [key: string]: DatabaseConfig } = {
     host: process.env.TEST_DB_HOST || "127.0.0.1",
     port: Number(process.env.TEST_DB_PORT) || 5432,
     dialect: "postgres",
+    logging: false,
   },
 };
 
@@ -43,6 +46,7 @@ const sequelize = new Sequelize(
     host: config.host,
     port: config.port,
     dialect: config.dialect,
+    logging: config.logging, // Usa la configuración específica para el entorno
   }
 );
 
