@@ -30,7 +30,7 @@ Además, podemos aprovechar las aserciones integradas que ofrece, asi como su
 CLI.
 
 
-# Evaluación de los tests
+## Evaluación de los tests
 Aquí podemos ver el runneo de los tests desde la terminal: <br>
 
 ![Tests VS](../imgs/tests_vs.png)

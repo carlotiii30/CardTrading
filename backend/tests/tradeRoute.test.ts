@@ -3,7 +3,6 @@ import app from "../src/app";
 import { sequelize } from "../src/config/database";
 import { User, Card, Trade } from "../src/models";
 import jwt from "jsonwebtoken";
-import { before } from "node:test";
 
 let token: string;
 let testUserId: number;
