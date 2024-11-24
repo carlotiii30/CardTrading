@@ -8,12 +8,15 @@ import tradeRoutes from "./routes/tradeRoutes";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { swaggerOptions } from "./services/swagger";
+import { httpLogger } from "./config/logger";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+app.use(httpLogger);
 
 app.use("/api/users", userRoutes);
 app.use("/api/cards", cardRoutes);
@@ -28,6 +31,10 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+export default app;

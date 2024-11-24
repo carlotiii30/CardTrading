@@ -122,7 +122,7 @@ router.get("/getCards", authenticateToken, getCards);
 
 /**
  * @swagger
- * /api/cards/getCard/{id}:
+ * /api/cards/getCard:
  *   get:
  *     summary: Return a card by ID
  *     tags: [Cards]
@@ -147,11 +147,11 @@ router.get("/getCards", authenticateToken, getCards);
  *       404:
  *         description: Card not found
  */
-router.get("/getCard/:id", authenticateToken, getCardById);
+router.get("/getCard", authenticateToken, getCardById);
 
 /**
  * @swagger
- * /api/cards/deleteCard/{id}:
+ * /api/cards/deleteCard:
  *   delete:
  *     summary: Delete a card by ID
  *     tags: [Cards]
@@ -172,6 +172,6 @@ router.get("/getCard/:id", authenticateToken, getCardById);
  *       404:
  *         description: Card not found
  */
-router.delete("/deleteCard/:id", authenticateToken, deleteCard);
+router.delete("/deleteCard", authenticateToken, deleteCard);
 
 export default router;

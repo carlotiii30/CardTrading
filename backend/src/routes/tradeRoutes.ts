@@ -119,14 +119,14 @@ router.post("/cancelTrade", authenticateToken, cancelTrade);
 
 /**
  * @swagger
- * /api/trades/getTrade/{tradeId}:
+ * /api/trades/getTrade:
  *   get:
  *     summary: Get a trade
  *     tags: [Trades]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: tradeId
  *         schema:
  *           type: integer
@@ -137,8 +137,10 @@ router.post("/cancelTrade", authenticateToken, cancelTrade);
  *         description: Trade details
  *       401:
  *         description: Unauthorized user
+ *       404:
+ *         description: Trade not found
  */
-router.get("/getTrade/:tradeId", authenticateToken, getTrade);
+router.get("/getTrade", authenticateToken, getTrade);
 
 /**
  * @swagger
