@@ -6,9 +6,9 @@ import "../models/index";
 dotenv.config();
 
 const createDatabaseIfNotExists = async () => {
-  const dbName = process.env.DB_DATABASE || "pokemon_trading";
-  const dbUsername = process.env.DB_USERNAME || "postgres";
-  const dbPassword = process.env.DB_PASSWORD || "password";
+  const dbName = process.env.DB_DATABASE || "pokemon_trading_test";
+  const dbUsername = process.env.DB_USERNAME || "pokemon_admin";
+  const dbPassword = process.env.DB_PASSWORD || "Pokemon";
   const dbHost = process.env.DB_HOST || "127.0.0.1";
 
   const adminSequelize = new Sequelize("postgres", dbUsername, dbPassword, {
