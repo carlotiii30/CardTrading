@@ -24,7 +24,7 @@ beforeAll(async () => {
     expiresIn: "1h",
   });
 
-  console.log(`Database: ${sequelize.getDatabaseName()}`);
+  console.log("Token generado:", token);
 });
 
 beforeEach(async () => {
