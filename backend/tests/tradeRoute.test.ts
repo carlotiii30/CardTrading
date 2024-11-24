@@ -23,15 +23,6 @@ beforeAll(async () => {
   token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "testSecretKey", {
     expiresIn: "1h",
   });
-
-  console.log(
-    "Clave secreta usada en el middleware:",
-    process.env.JWT_SECRET || "testSecretKey"
-  );
-
-  console.log("Token generado:", token);
-  const decoded = jwt.decode(token);
-  console.log("Contenido del token decodificado:", decoded);
 });
 
 beforeEach(async () => {
@@ -77,12 +68,17 @@ describe("Trades API", () => {
         .query({
           requestedCardId,
           offeredCardId,
-        });
+        })
+        .expect(201);
 
-      console.log("Respuesta del servidor:", response.body);
-      console.log("Estado HTTP:", response.status);
-
-      expect(response.status).toBe(201);
+      expect(response.body).toMatchObject({
+        id: expect.any(Number),
+        offeredCardId,
+        requestedCardId,
+        offeredUserId: testUserId,
+        requestedUserId: testUserId,
+        status: "pending",
+      });
     });
 
     it("should return 404 if requested card is not found", async () => {
