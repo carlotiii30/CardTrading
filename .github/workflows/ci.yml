@@ -52,9 +52,9 @@ jobs:
       run: echo "Environment variables set"
 
     - name: Run Database Migrations
-      run: cd backend && yarn migrate
+      run: cd backend && NODE_ENV=test && yarn sync
 
     - name: Run Tests
       env:
         NODE_ENV: test
-      run: cd backend && yarn test
+      run: cd backend && NODE_ENV=test && yarn test
