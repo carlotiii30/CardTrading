@@ -24,7 +24,14 @@ beforeAll(async () => {
     expiresIn: "1h",
   });
 
+  console.log(
+    "Clave secreta usada en el middleware:",
+    process.env.JWT_SECRET || "testSecretKey"
+  );
+
   console.log("Token generado:", token);
+  const decoded = jwt.decode(token);
+  console.log("Contenido del token decodificado:", decoded);
 });
 
 beforeEach(async () => {
