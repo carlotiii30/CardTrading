@@ -23,5 +23,17 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
+    - name: Set Environment Variables
+      env:
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        TEST_DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
+        TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
+        TEST_DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+        TEST_DB_HOST: ${{ secrets.TEST_DB_HOST }}
+        TEST_DB_PORT: ${{ secrets.TEST_DB_PORT }}
+      run: echo "Environment variables set"
+
     - name: Run Tests
-      run: cd backend && NODE_ENV=test && yarn test
+      env:
+        NODE_ENV: test
+      run: cd backend && yarn test
