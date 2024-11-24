@@ -46,7 +46,7 @@ const sequelize = new Sequelize(
     host: config.host,
     port: config.port,
     dialect: config.dialect,
-    logging: config.logging, // Usa la configuración específica para el entorno
+    logging: config.logging,
   }
 );
 
