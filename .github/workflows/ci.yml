@@ -35,13 +35,13 @@ jobs:
 
     - name: Wait for PostgreSQL
       run: |
-        until nc -z localhost 5432; do
+        until pg_isready -h $TEST_DB_HOST -U $TEST_DB_USERNAME; do
           echo "Waiting for PostgreSQL..."
-          sleep 1
+          sleep 2
         done
-        echo "PostgreSQL is up"
-        sleep 5
-      shell: bash
+      env:
+        PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+    
 
     - name: Set Environment Variables
       env:
@@ -54,8 +54,15 @@ jobs:
       run: echo "Environment variables set"
 
     - name: Debug Environment Variables
-      run: env | grep TEST_DB_DATABASE
-
+      run: 
+        
+    - name: Test Database Connection
+      run: |
+        psql -h $TEST_DB_HOST -U $TEST_DB_USERNAME -d $TEST_DB_DATABASE -c '\l'
+      env:
+        PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+      
+    
     - name: Run Database Migrations
       run: cd backend && yarn sync:test
 
