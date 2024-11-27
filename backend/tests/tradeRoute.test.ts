@@ -24,7 +24,10 @@ beforeAll(async () => {
     expiresIn: "1h",
   });
 
-  console.log(token);
+  console.log(
+    "Generated Token:",
+    `${token.slice(0, 10)}...${token.slice(-10)}`
+  );
 });
 
 beforeEach(async () => {
