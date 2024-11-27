@@ -73,8 +73,8 @@ describe("Users API", () => {
       const response = await request(app)
         .post("/api/users/login")
         .query({
-          username: "testuser",
-          password: "testpassword",
+          username: "newuser",
+          password: "newpassword",
         })
         .expect(200);
 
