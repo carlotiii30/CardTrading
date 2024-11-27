@@ -35,7 +35,7 @@ jobs:
 
     - name: Set Environment Variables
       env:
-        JWT_SECRET: "MEGASUPERSECRET"
+        JWT_SECRET: "testSecretKey"
         TEST_DB_DATABASE: "pokemon_trading_test"
         TEST_DB_USERNAME: "pokemon_admin"
         TEST_DB_PASSWORD: "Pokemon"
@@ -82,4 +82,4 @@ jobs:
     - name: Run Tests
       env:
         NODE_ENV: test
-      run: cd backend && NODE_ENV=test && yarn test
+      run: cd backend && NODE_ENV=test && yarn test --verbose
