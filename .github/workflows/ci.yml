@@ -54,7 +54,7 @@ jobs:
       run: echo "Environment variables set"
 
     - name: Debug Environment Variables
-      run: env | grep TEST_DB
+      run: env | grep TEST_DB_DATABASE
 
     - name: Run Database Migrations
       run: cd backend && yarn sync:test
