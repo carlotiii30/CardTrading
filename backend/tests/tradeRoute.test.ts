@@ -23,9 +23,6 @@ beforeAll(async () => {
   token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "testSecretKey", {
     expiresIn: "1h",
   });
-
-  const fs = require("fs");
-  fs.writeFileSync("generated_token.txt", token, "utf8");
 });
 
 beforeEach(async () => {
