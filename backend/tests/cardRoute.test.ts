@@ -19,13 +19,25 @@ beforeAll(async () => {
 
   testUserId = user.id;
 
-  token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "testSecretKey", {
-    expiresIn: "1h",
-  });
+  token = jwt.sign(
+    { id: user.id },
+    process.env.JWT_SECRET || "MEGASUPERSECRET",
+    {
+      expiresIn: "1h",
+    }
+  );
 });
 
 beforeEach(async () => {
   await Card.destroy({ where: {} });
+});
+
+afterEach(async () => {
+  const cards = await Card.findAll();
+  console.log(
+    "Cartas en la base de datos:",
+    cards.map((card) => card.toJSON())
+  );
 });
 
 afterAll(async () => {

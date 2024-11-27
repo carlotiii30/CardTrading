@@ -16,7 +16,7 @@ jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
 
 beforeAll(() => {
-  process.env.JWT_SECRET = "testSecretKey";
+  process.env.JWT_SECRET = "MEGASUPERSECRET";
 });
 
 describe("User Controller", () => {
@@ -44,7 +44,7 @@ describe("User Controller", () => {
         password: "encryptedPassword",
         role: "user",
       });
-      expect(jwt.sign).toHaveBeenCalledWith({ id: 1 }, "testSecretKey", {
+      expect(jwt.sign).toHaveBeenCalledWith({ id: 1 }, "MEGASUPERSECRET", {
         expiresIn: "1h",
       });
       expect(res.status).toHaveBeenCalledWith(201);
@@ -118,7 +118,7 @@ describe("User Controller", () => {
         "password123",
         "encryptedPassword"
       );
-      expect(jwt.sign).toHaveBeenCalledWith({ id: 1 }, "testSecretKey", {
+      expect(jwt.sign).toHaveBeenCalledWith({ id: 1 }, "MEGASUPERSECRET", {
         expiresIn: "1h",
       });
       expect(res.json).toHaveBeenCalledWith({

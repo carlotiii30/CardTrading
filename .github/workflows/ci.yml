@@ -17,9 +17,9 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: ${{ secrets.TEST_DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.TEST_DB_DATABASE }}
+          POSTGRES_USER: "pokemon_admin"
+          POSTGRES_PASSWORD: "Pokemon"
+          POSTGRES_DB: "pokemon_trading_test"
 
     steps:
     - name: Checkout Repository
@@ -33,28 +33,61 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
-    - name: Wait for PostgreSQL
-      run: |
-        until nc -z localhost 5432; do
-          echo "Waiting for PostgreSQL..."
-          sleep 1
-        done
-      shell: bash
-
     - name: Set Environment Variables
       env:
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        TEST_DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
-        TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
-        TEST_DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-        TEST_DB_HOST: localhost
+        JWT_SECRET: "MEGASUPERSECRET"
+        TEST_DB_DATABASE: "pokemon_trading_test"
+        TEST_DB_USERNAME: "pokemon_admin"
+        TEST_DB_PASSWORD: "Pokemon"
+        TEST_DB_HOST: "localhost"
         TEST_DB_PORT: 5432
       run: echo "Environment variables set"
 
+    - name: Debug Database Variables
+      run: |
+        echo "TEST_DB_DATABASE: $TEST_DB_DATABASE"
+        echo "TEST_DB_USERNAME: $TEST_DB_USERNAME"
+        echo "TEST_DB_HOST: $TEST_DB_HOST"
+        echo "TEST_DB_PORT: $TEST_DB_PORT"
+      env:
+        TEST_DB_DATABASE: "pokemon_trading_test"
+        TEST_DB_USERNAME: "pokemon_admin"
+        TEST_DB_PASSWORD: "Pokemon"
+        TEST_DB_HOST: "localhost"
+        TEST_DB_PORT: 5432
+    
+    - name: Check PostgreSQL Logs
+      run: docker logs $(docker ps -q --filter "ancestor=postgres:14")
+      
+    - name: Wait for PostgreSQL
+      run: |
+        echo "Esperando que PostgreSQL se inicie..."
+        sleep 15
+        until pg_isready -h localhost -U pokemon_admin; do
+          echo "Esperando a PostgreSQL..."
+          sleep 2
+        done
+      env:
+        PGPASSWORD: "Pokemon"
+    
+    - name: Test Database Connection
+      run: |
+        psql -h localhost -U pokemon_admin -d pokemon_trading_test -c '\l'
+      env:
+        PGPASSWORD: "Pokemon"
+      
     - name: Run Database Migrations
       run: cd backend && yarn sync:test
 
     - name: Run Tests
       env:
         NODE_ENV: test
-      run: cd backend && NODE_ENV=test && yarn test
+      run: cd backend && NODE_ENV=test && yarn test --verbose
+
+
+    - name: Upload Generated Token
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-token
+        path: generated_token.txt
+
