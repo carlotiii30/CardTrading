@@ -83,3 +83,11 @@ jobs:
       env:
         NODE_ENV: test
       run: cd backend && NODE_ENV=test && yarn test --verbose
+
+
+    - name: Upload Generated Token
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-token
+        path: generated_token.txt
+

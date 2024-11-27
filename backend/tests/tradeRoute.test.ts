@@ -24,10 +24,8 @@ beforeAll(async () => {
     expiresIn: "1h",
   });
 
-  console.log(
-    "Generated Token:",
-    `${token.slice(0, 10)}...${token.slice(-10)}`
-  );
+  const fs = require("fs");
+  fs.writeFileSync("generated_token.txt", token, "utf8");
 });
 
 beforeEach(async () => {
