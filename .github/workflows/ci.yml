@@ -35,7 +35,7 @@ jobs:
 
     - name: Set Environment Variables
       env:
-        JWT_SECRET: "mysecret"
+        JWT_SECRET: "MEGASUPERSECRET"
         TEST_DB_DATABASE: "pokemon_trading_test"
         TEST_DB_USERNAME: "pokemon_admin"
         TEST_DB_PASSWORD: "Pokemon"
