@@ -23,6 +23,8 @@ beforeAll(async () => {
   token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "testSecretKey", {
     expiresIn: "1h",
   });
+
+  console.log(token);
 });
 
 beforeEach(async () => {
