@@ -32,6 +32,14 @@ beforeEach(async () => {
   await Card.destroy({ where: {} });
 });
 
+afterEach(async () => {
+  const cards = await Card.findAll();
+  console.log(
+    "Cartas en la base de datos:",
+    cards.map((card) => card.toJSON())
+  );
+});
+
 afterAll(async () => {
   await User.destroy({ where: {} });
   await sequelize.close();

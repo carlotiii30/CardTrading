@@ -28,6 +28,14 @@ beforeAll(async () => {
   );
 });
 
+afterEach(async () => {
+  const users = await User.findAll();
+  console.log(
+    "Usuarios en la base de datos:",
+    users.map((user) => user.toJSON())
+  );
+});
+
 afterAll(async () => {
   await User.destroy({ where: {} });
   await sequelize.close();
