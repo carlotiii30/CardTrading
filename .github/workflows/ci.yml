@@ -15,11 +15,11 @@ jobs:
       postgres:
         image: postgres:14
         ports:
-          - 5433:5432
+          - 5432:5432
         env:
-          POSTGRES_USER: ${{ secrets.TEST_DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.TEST_DB_DATABASE }}
+          POSTGRES_USER: "pokemon_admin"
+          POSTGRES_PASSWORD: "Pokemon"
+          POSTGRES_DB: "pokemon_trading_test"
 
     steps:
     - name: Checkout Repository
@@ -40,7 +40,7 @@ jobs:
         TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
         TEST_DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
         TEST_DB_HOST: localhost
-        TEST_DB_PORT: 5433
+        TEST_DB_PORT: 5432
       run: echo "Environment variables set"
 
     - name: Debug Database Variables
@@ -54,11 +54,9 @@ jobs:
         TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
         TEST_DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
         TEST_DB_HOST: localhost
-        TEST_DB_PORT: 5433
+        TEST_DB_PORT: 5432
     
-    - name: Check PostgreSQL Logs
-      run: docker logs $(docker ps -q --filter "ancestor=postgres:14")
-      
+
     - name: Wait for PostgreSQL
       run: |
         until pg_isready -h $TEST_DB_HOST -U $TEST_DB_USERNAME; do
