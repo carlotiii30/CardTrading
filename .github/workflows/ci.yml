@@ -56,7 +56,9 @@ jobs:
         TEST_DB_HOST: localhost
         TEST_DB_PORT: 5432
     
-
+    - name: Check PostgreSQL Logs
+      run: docker logs $(docker ps -q --filter "ancestor=postgres:14")
+        
     - name: Wait for PostgreSQL
       run: |
         until pg_isready -h $TEST_DB_HOST -U $TEST_DB_USERNAME; do
