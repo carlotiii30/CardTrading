@@ -19,9 +19,13 @@ beforeAll(async () => {
 
   testUserId = user.id;
 
-  token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "testSecretKey", {
-    expiresIn: "1h",
-  });
+  token = jwt.sign(
+    { id: user.id },
+    process.env.JWT_SECRET || "MEGASUPERSECRET",
+    {
+      expiresIn: "1h",
+    }
+  );
 });
 
 afterAll(async () => {
