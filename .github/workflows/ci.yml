@@ -33,16 +33,6 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
-    - name: Wait for PostgreSQL
-      run: |
-        until pg_isready -h $TEST_DB_HOST -U $TEST_DB_USERNAME; do
-          echo "Waiting for PostgreSQL..."
-          sleep 2
-        done
-      env:
-        PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-    
-
     - name: Set Environment Variables
       env:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -55,7 +45,16 @@ jobs:
 
     - name: Debug Environment Variables
       run: printenv
-        
+
+    - name: Wait for PostgreSQL
+      run: |
+        until pg_isready -h $TEST_DB_HOST -U $TEST_DB_USERNAME; do
+          echo "Waiting for PostgreSQL..."
+          sleep 2
+        done
+      env:
+        PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+    
     - name: Test Database Connection
       run: |
         psql -h $TEST_DB_HOST -U $TEST_DB_USERNAME -d $TEST_DB_DATABASE -c '\l'
