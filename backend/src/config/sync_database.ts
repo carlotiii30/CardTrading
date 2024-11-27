@@ -57,12 +57,16 @@ const createDatabase = async () => {
 
 const syncDatabase = async () => {
   try {
+    console.log("Iniciando sincronización de la base de datos...");
     await dropDatabaseIfExists();
     await createDatabase();
     await sequelize.sync({ force: true });
     console.log("Modelos sincronizados con la base de datos.");
   } catch (error) {
     console.error("Error al sincronizar los modelos:", error);
+  } finally {
+    await sequelize.close();
+    console.log("Conexión a la base de datos cerrada.");
   }
 };
 

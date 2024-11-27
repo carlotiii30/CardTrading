@@ -39,6 +39,8 @@ jobs:
           echo "Waiting for PostgreSQL..."
           sleep 1
         done
+        echo "PostgreSQL is up"
+        sleep 5
       shell: bash
 
     - name: Set Environment Variables
@@ -50,6 +52,9 @@ jobs:
         TEST_DB_HOST: localhost
         TEST_DB_PORT: 5432
       run: echo "Environment variables set"
+
+    - name: Debug Environment Variables
+      run: env | grep TEST_DB
 
     - name: Run Database Migrations
       run: cd backend && yarn sync:test
