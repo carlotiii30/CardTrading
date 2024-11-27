@@ -7,6 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: ['lts/-1', 'lts/*', 'current']
+
     services:
       postgres:
         image: postgres:14
