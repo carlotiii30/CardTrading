@@ -9,7 +9,7 @@ const dropDatabaseIfExists = async () => {
   const dbName = process.env.TEST_DB_DATABASE || "pokemon_trading_test";
   const dbUsername = process.env.TEST_DB_USERNAME || "pokemon_admin";
   const dbPassword = process.env.TEST_DB_PASSWORD || "Pokemon";
-  const dbHost = process.env.TEST_DB_HOST || "127.0.0.1";
+  const dbHost = process.env.TEST_DB_HOST || "db";
 
   const adminSequelize = new Sequelize("postgres", dbUsername, dbPassword, {
     host: dbHost,
@@ -33,7 +33,7 @@ const createDatabase = async () => {
   const dbName = process.env.TEST_DB_DATABASE || "pokemon_trading_test";
   const dbUsername = process.env.TEST_DB_USERNAME || "pokemon_admin";
   const dbPassword = process.env.TEST_DB_PASSWORD || "Pokemon";
-  const dbHost = process.env.TEST_DB_HOST || "127.0.0.1";
+  const dbHost = process.env.TEST_DB_HOST || "db";
 
   const adminSequelize = new Sequelize("postgres", dbUsername, dbPassword, {
     host: dbHost,

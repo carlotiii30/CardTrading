@@ -33,61 +33,27 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
-    - name: Set Environment Variables
-      env:
-        JWT_SECRET: "MEGASUPERSECRET"
-        TEST_DB_DATABASE: "pokemon_trading_test"
-        TEST_DB_USERNAME: "pokemon_admin"
-        TEST_DB_PASSWORD: "Pokemon"
-        TEST_DB_HOST: "localhost"
-        TEST_DB_PORT: 5432
-      run: echo "Environment variables set"
+    - name: Build Docker Images
+      run: docker-compose build
 
-    - name: Debug Database Variables
+    - name: Start Docker Containers
+      run: docker-compose up -d
+
+    - name: Wait for Services
       run: |
-        echo "TEST_DB_DATABASE: $TEST_DB_DATABASE"
-        echo "TEST_DB_USERNAME: $TEST_DB_USERNAME"
-        echo "TEST_DB_HOST: $TEST_DB_HOST"
-        echo "TEST_DB_PORT: $TEST_DB_PORT"
-      env:
-        TEST_DB_DATABASE: "pokemon_trading_test"
-        TEST_DB_USERNAME: "pokemon_admin"
-        TEST_DB_PASSWORD: "Pokemon"
-        TEST_DB_HOST: "localhost"
-        TEST_DB_PORT: 5432
-    
-    - name: Check PostgreSQL Logs
-      run: docker logs $(docker ps -q --filter "ancestor=postgres:14")
-      
-    - name: Wait for PostgreSQL
-      run: |
-        echo "Esperando que PostgreSQL se inicie..."
+        echo "Esperando que PostgreSQL y otros servicios se inicien..."
         sleep 15
-        until pg_isready -h localhost -U pokemon_admin; do
+        until docker exec db pg_isready -U pokemon_admin; do
           echo "Esperando a PostgreSQL..."
           sleep 2
         done
-      env:
-        PGPASSWORD: "Pokemon"
-    
-    - name: Test Database Connection
-      run: |
-        psql -h localhost -U pokemon_admin -d pokemon_trading_test -c '\l'
-      env:
-        PGPASSWORD: "Pokemon"
-      
-    - name: Run Database Migrations
-      run: cd backend && yarn sync:test
+
+    - name: Sync Test Database
+      run: docker-compose exec app yarn sync:test
 
     - name: Run Tests
-      env:
-        NODE_ENV: test
-      run: cd backend && NODE_ENV=test && yarn test --verbose
+      run: docker-compose exec app yarn test --verbose
 
-
-    - name: Upload Generated Token
-      uses: actions/upload-artifact@v3
-      with:
-        name: generated-token
-        path: generated_token.txt
-
+    - name: Stop Docker Containers
+      if: always()
+      run: docker-compose down --volumes --remove-orphans

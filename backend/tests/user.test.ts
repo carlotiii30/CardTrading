@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../src/models/index";
 import {
@@ -12,7 +12,7 @@ import {
 import { mockRequest, mockResponse } from "jest-mock-req-res";
 
 jest.mock("../src/models/index");
-jest.mock("bcrypt");
+jest.mock("bcryptjs");
 jest.mock("jsonwebtoken");
 
 beforeAll(() => {

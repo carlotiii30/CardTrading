@@ -3,7 +3,7 @@ import app from "../src/app";
 import { sequelize } from "../src/config/database";
 import { User } from "../src/models";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 let token: string;
 let testUserId: number;
