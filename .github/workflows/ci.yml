@@ -2,8 +2,6 @@ name: Integración Continua
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   build:
