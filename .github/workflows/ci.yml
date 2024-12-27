@@ -28,29 +28,9 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
-    - name: Build Docker Images
-      run: docker-compose build
+    - name: Run Tests in Docker
+      run: cd backend && yarn docker:test
 
-    - name: Start Docker Containers
-      run: docker-compose up -d
-
-    - name: Wait for Services
-      run: |
-        echo "Esperando que PostgreSQL y otros servicios se inicien..."
-        sleep 15
-        until docker exec db pg_isready -U pokemon_admin; do
-          echo "Esperando a PostgreSQL..."
-          sleep 2
-        done
-      env:
-        PGPASSWORD: "Pokemon"
-
-    - name: Sync Test Database
-      run: docker-compose exec app yarn sync:test
-
-    - name: Run Tests
-      run: docker-compose exec app yarn test --verbose
-
-    - name: Stop Docker Containers
+    - name: Cleanup Docker Containers
       if: always()
-      run: docker-compose down --volumes --remove-orphans
+      run: cd backend && yarn docker:stop
