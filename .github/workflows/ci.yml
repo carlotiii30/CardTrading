@@ -2,6 +2,8 @@ name: Integración Continua
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -11,16 +13,6 @@ jobs:
       matrix:
         node-version: ['lts/-1', 'lts/*', 'current']
 
-    services:
-      postgres:
-        image: postgres:14
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: "pokemon_admin"
-          POSTGRES_PASSWORD: "Pokemon"
-          POSTGRES_DB: "pokemon_trading_test"
-
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -29,6 +21,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
 
     - name: Install Dependencies
       run: cd backend && yarn install
@@ -47,6 +44,8 @@ jobs:
           echo "Esperando a PostgreSQL..."
           sleep 2
         done
+      env:
+        PGPASSWORD: "Pokemon"
 
     - name: Sync Test Database
       run: docker-compose exec app yarn sync:test
