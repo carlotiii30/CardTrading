@@ -6,8 +6,12 @@ services:
     container_name: app
     ports:
       - "3000:3000"
-    env_file:
-      - .env
+    environment:
+      - DB_HOST=db
+      - DB_USER=pokemon_admin
+      - DB_PASSWORD=Pokemon
+      - DB_NAME=pokemon_trading
+      - JWT_SECRET=MEGASUPERSECRET
     depends_on:
       - db
       - elasticsearch
@@ -19,10 +23,13 @@ services:
       context: ./
     container_name: test
     command: ["yarn", "test"]
-    env_file:
-      - .env
     environment:
-      NODE_ENV: test
+      - NODE_ENV=test
+      - DB_HOST=db
+      - DB_USER=pokemon_admin
+      - DB_PASSWORD=Pokemon
+      - DB_NAME=pokemon_trading
+      - JWT_SECRET=MEGASUPERSECRET
     depends_on:
       - app
       - db
@@ -74,7 +81,7 @@ services:
 
 networks:
   app_network:
-  
+
 volumes:
   db_data:
   es_data:
