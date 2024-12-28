@@ -12,7 +12,7 @@
     "sync:test": "NODE_ENV=test ts-node src/config/sync_database.ts",
     "docker:start": "docker-compose up -d",
     "docker:stop": "docker-compose down",
-    "docker:test": "yarn docker:start && docker-compose exec -T db psql -U pokemon_admin -c 'CREATE DATABASE IF NOT EXISTS pokemon_trading_test;' && docker-compose run --rm test",
+    "docker:test": "yarn docker:start && docker-compose run --rm test",
     "sync:docker": "docker-compose exec -T app yarn sync"
   },
   "dependencies": {
