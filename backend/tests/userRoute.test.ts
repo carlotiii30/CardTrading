@@ -3,7 +3,7 @@ import app from "../src/app";
 import { sequelize } from "../src/config/database";
 import { User } from "../src/models";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 let token: string;
 let testUserId: number;
@@ -19,9 +19,21 @@ beforeAll(async () => {
 
   testUserId = user.id;
 
-  token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "testSecretKey", {
-    expiresIn: "1h",
-  });
+  token = jwt.sign(
+    { id: user.id },
+    process.env.JWT_SECRET || "MEGASUPERSECRET",
+    {
+      expiresIn: "1h",
+    }
+  );
+});
+
+afterEach(async () => {
+  const users = await User.findAll();
+  console.log(
+    "Usuarios en la base de datos:",
+    users.map((user) => user.toJSON())
+  );
 });
 
 afterAll(async () => {

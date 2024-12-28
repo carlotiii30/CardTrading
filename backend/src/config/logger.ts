@@ -1,15 +1,18 @@
 import pino from "pino";
 import pinoHttp from "pino-http";
-import fs from "fs";
+import createPinoElastic from "pino-elasticsearch";
 
-const logFilePath = "./logs/app.log";
+const elasticUrl = process.env.ELASTIC_URL || "http://elasticsearch:9200";
 
-if (!fs.existsSync("./logs")) {
-  fs.mkdirSync("./logs");
+let streamToElastic;
+if (process.env.NODE_ENV !== "test") {
+  streamToElastic = createPinoElastic({
+    index: "app-logs",
+    node: elasticUrl,
+  });
 }
 
-const logStream = pino.destination(logFilePath);
-
+// Configura el logger base
 const logger = pino(
   {
     level:
@@ -22,11 +25,11 @@ const logger = pino(
       },
     },
   },
-  logStream
+  streamToElastic || undefined
 );
 
 if (process.env.NODE_ENV !== "test") {
-  logger.info(`Logging to file at ${logFilePath}`);
+  logger.info(`Logging to Elasticsearch at ${elasticUrl}`);
 }
 
 export const httpLogger = pinoHttp({ logger });

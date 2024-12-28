@@ -1,0 +1,88 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+    container_name: app
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=pokemon_admin
+      - DB_PASSWORD=Pokemon
+      - DB_NAME=pokemon_trading
+      - JWT_SECRET=MEGASUPERSECRET
+    depends_on:
+      - db
+      - elasticsearch
+    networks:
+      - app_network
+
+  test:
+    build:
+      context: ./
+    container_name: test
+    command: ["yarn", "test"]
+    environment:
+      - NODE_ENV=test
+      - DB_HOST=db
+      - DB_USER=pokemon_admin
+      - DB_PASSWORD=Pokemon
+      - DB_NAME=pokemon_trading
+      - JWT_SECRET=MEGASUPERSECRET
+    depends_on:
+      - app
+      - db
+      - elasticsearch
+      - kibana
+    networks:
+      - app_network
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:14
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pokemon_admin
+      POSTGRES_PASSWORD: Pokemon
+      POSTGRES_DB: pokemon_trading
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init_db:/docker-entrypoint-initdb.d
+    networks:
+      - app_network
+    restart: always
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    restart: always
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.10.1
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    restart: always
+
+networks:
+  app_network:
+
+volumes:
+  db_data:
+  es_data:

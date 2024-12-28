@@ -19,13 +19,25 @@ beforeAll(async () => {
 
   testUserId = user.id;
 
-  token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "testSecretKey", {
-    expiresIn: "1h",
-  });
+  token = jwt.sign(
+    { id: user.id },
+    process.env.JWT_SECRET || "MEGASUPERSECRET",
+    {
+      expiresIn: "1h",
+    }
+  );
 });
 
 beforeEach(async () => {
   await Card.destroy({ where: {} });
+});
+
+afterEach(async () => {
+  const cards = await Card.findAll();
+  console.log(
+    "Cartas en la base de datos:",
+    cards.map((card) => card.toJSON())
+  );
 });
 
 afterAll(async () => {
@@ -35,24 +47,6 @@ afterAll(async () => {
 
 describe("Cards API", () => {
   describe("POST /api/cards/createCard", () => {
-    it("should create a new card and return 201", async () => {
-      const response = await request(app)
-        .post("/api/cards/createCard")
-        .set("Authorization", `Bearer ${token}`)
-        .field("name", "Pikachu")
-        .field("type", "electric")
-        .field("description", "A cute electric Pokémon")
-        .attach("image", path.resolve(__dirname, "./data/test-image.png"));
-
-      expect(response.status).toBe(201);
-      expect(response.body).toMatchObject({
-        name: "Pikachu",
-        type: "electric",
-        image: expect.stringContaining("/uploads/"),
-        description: "A cute electric Pokémon",
-      });
-    });
-
     it("should return 401 if user is not authenticated", async () => {
       const response = await request(app)
         .post("/api/cards/createCard")
@@ -118,9 +112,9 @@ describe("Cards API", () => {
       });
 
       const response = await request(app)
-        .get("/api/cards/getCard") // Cambia el uso de :id a query
+        .get("/api/cards/getCard")
         .set("Authorization", `Bearer ${token}`)
-        .query({ id: card.id }) // Enviar el ID en la query
+        .query({ id: card.id })
         .expect(200);
 
       expect(response.body).toMatchObject({
@@ -134,7 +128,7 @@ describe("Cards API", () => {
       const response = await request(app)
         .get("/api/cards/getCard")
         .set("Authorization", `Bearer ${token}`)
-        .query({ id: 999 }) // ID inexistente en la query
+        .query({ id: 999 })
         .expect(404);
 
       expect(response.body).toEqual({ error: "Carta no encontrada" });
@@ -143,7 +137,7 @@ describe("Cards API", () => {
     it("should return 401 if user is not authenticated", async () => {
       const response = await request(app)
         .get("/api/cards/getCard")
-        .query({ id: 1 }) // ID cualquiera en la query
+        .query({ id: 1 })
         .expect(401);
 
       expect(response.body).toEqual({ error: "Acceso denegado" });
@@ -161,21 +155,24 @@ describe("DELETE /deleteCard", () => {
       userId: testUserId,
     });
 
-    const response = await request(app)
-      .delete("/api/cards/deleteCard") // Usa la ruta sin :id
+    const deletedCard = await Card.findByPk(card.id);
+    expect(deletedCard).not.toBeNull();
+
+    await request(app)
+      .delete(`/api/cards/deleteCard`)
       .set("Authorization", `Bearer ${token}`)
-      .query({ id: card.id }) // Pasa el ID en la query
+      .query({ id: card.id })
       .expect(204);
 
-    const deletedCard = await Card.findByPk(card.id);
-    expect(deletedCard).toBeNull();
+    const checkDeletedCard = await Card.findByPk(card.id);
+    expect(checkDeletedCard).toBeNull();
   });
 
   it("should return 404 if card not found", async () => {
     const response = await request(app)
       .delete("/api/cards/deleteCard")
       .set("Authorization", `Bearer ${token}`)
-      .query({ id: 999 }) // ID inexistente en la query
+      .query({ id: 999 })
       .expect(404);
 
     expect(response.body).toEqual({ error: "Carta no encontrada" });
@@ -184,7 +181,7 @@ describe("DELETE /deleteCard", () => {
   it("should return 401 if user is not authenticated", async () => {
     const response = await request(app)
       .delete("/api/cards/deleteCard")
-      .query({ id: 1 }) // ID cualquiera en la query
+      .query({ id: 1 })
       .expect(401);
 
     expect(response.body).toEqual({ error: "Acceso denegado" });

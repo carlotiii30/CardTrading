@@ -9,7 +9,7 @@ const dropDatabaseIfExists = async () => {
   const dbName = process.env.TEST_DB_DATABASE || "pokemon_trading_test";
   const dbUsername = process.env.TEST_DB_USERNAME || "pokemon_admin";
   const dbPassword = process.env.TEST_DB_PASSWORD || "Pokemon";
-  const dbHost = process.env.TEST_DB_HOST || "127.0.0.1";
+  const dbHost = process.env.TEST_DB_HOST || "db";
 
   const adminSequelize = new Sequelize("postgres", dbUsername, dbPassword, {
     host: dbHost,
@@ -33,7 +33,7 @@ const createDatabase = async () => {
   const dbName = process.env.TEST_DB_DATABASE || "pokemon_trading_test";
   const dbUsername = process.env.TEST_DB_USERNAME || "pokemon_admin";
   const dbPassword = process.env.TEST_DB_PASSWORD || "Pokemon";
-  const dbHost = process.env.TEST_DB_HOST || "127.0.0.1";
+  const dbHost = process.env.TEST_DB_HOST || "db";
 
   const adminSequelize = new Sequelize("postgres", dbUsername, dbPassword, {
     host: dbHost,
@@ -57,12 +57,16 @@ const createDatabase = async () => {
 
 const syncDatabase = async () => {
   try {
+    console.log("Iniciando sincronización de la base de datos...");
     await dropDatabaseIfExists();
     await createDatabase();
     await sequelize.sync({ force: true });
     console.log("Modelos sincronizados con la base de datos.");
   } catch (error) {
     console.error("Error al sincronizar los modelos:", error);
+  } finally {
+    await sequelize.close();
+    console.log("Conexión a la base de datos cerrada.");
   }
 };
 

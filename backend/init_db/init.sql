@@ -1,0 +1,2 @@
+CREATE DATABASE pokemon_trading_test;
+CREATE DATABASE pokemon_trading;

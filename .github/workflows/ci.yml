@@ -1,4 +1,4 @@
-name: Integración Continua
+name: CI
 
 on:
   push:
@@ -11,16 +11,6 @@ jobs:
       matrix:
         node-version: ['lts/-1', 'lts/*', 'current']
 
-    services:
-      postgres:
-        image: postgres:14
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: ${{ secrets.TEST_DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.TEST_DB_DATABASE }}
-
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -30,31 +20,42 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
     - name: Install Dependencies
       run: cd backend && yarn install
 
+    - name: Start Docker Containers
+      run: cd backend && yarn docker:start
+
     - name: Wait for PostgreSQL
       run: |
-        until nc -z localhost 5432; do
-          echo "Waiting for PostgreSQL..."
-          sleep 1
+        echo "Esperando que PostgreSQL se inicie..."
+        sleep 10
+        until docker-compose exec -T db pg_isready -U pokemon_admin; do
+          echo "PostgreSQL no está listo aún. Reintentando..."
+          sleep 5
         done
-      shell: bash
+      working-directory: backend
 
-    - name: Set Environment Variables
-      env:
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        TEST_DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
-        TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
-        TEST_DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-        TEST_DB_HOST: localhost
-        TEST_DB_PORT: 5432
-      run: echo "Environment variables set"
+    - name: Create Test Database
+      run: |
+        echo "Creando la base de datos de prueba..."
+        docker-compose exec -T db psql -U pokemon_admin -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'pokemon_trading_test') THEN CREATE DATABASE pokemon_trading_test; END IF; END \$\$;"
+      working-directory: backend
 
-    - name: Run Database Migrations
-      run: cd backend && yarn sync:test
+    - name: Sync Test Database
+      run: |
+        echo "Sincronizando la base de datos..."
+        docker-compose exec -T app yarn sync:test
+      working-directory: backend
 
-    - name: Run Tests
-      env:
-        NODE_ENV: test
-      run: cd backend && NODE_ENV=test && yarn test
+    - name: Run Tests in Docker
+      run: cd backend && yarn docker:test
+
+    - name: Cleanup Docker Containers
+      if: always()
+      run: cd backend && yarn docker:stop
