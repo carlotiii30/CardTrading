@@ -45,7 +45,6 @@ La definición del proyecto, incluyendo los objetivos y requisitos, está docume
 - **Dockerfile de la aplicación**: [Dockerfile](./backend/Dockerfile)
 - **Publicación de contenedores**: Instrucciones y detalles en [contenedores](./docs/contenedores.md).
 - **Fichero `docker-compose.yml`**: La configuración del clúster se encuentra en el archivo [docker-compose.yml](./docker-compose.yml).
-- **Tests del clúster de contenedores**: Documentación en [tests del clúster](./docs/tests_clúster.md).
 
 ### Código
 - **Fichero de composición**: [docker-compose.yml](./docker-compose.yml)
