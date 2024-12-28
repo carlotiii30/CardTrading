@@ -2,6 +2,10 @@ name: Integración Continua
 
 on:
   push:
+    branches:
+      - main
+      - feature/hito4 # Asegúrate de incluir la rama que estás probando
+  pull_request:
 
 jobs:
   build:
@@ -28,21 +32,32 @@ jobs:
     - name: Install Dependencies
       run: cd backend && yarn install
 
-    - name: Start Docker Services
+    - name: Start Docker Containers
       run: cd backend && yarn docker:start
 
-    - name: Wait for PostgreSQL to be Ready
+    - name: Wait for PostgreSQL
       run: |
-        cd backend
-        until docker-compose exec -T db pg_isready -U pokemon_admin -d pokemon_trading_test; do
-          echo "Waiting for PostgreSQL..."
+        echo "Esperando que PostgreSQL se inicie..."
+        sleep 10
+        until docker-compose exec -T db pg_isready -U pokemon_admin; do
+          echo "PostgreSQL no está listo aún. Reintentando..."
           sleep 5
         done
+      working-directory: backend
 
-    - name: Sync Database
-      run: cd backend && docker-compose exec app yarn sync:db
+    - name: Create Test Database
+      run: |
+        echo "Creando la base de datos de prueba..."
+        docker-compose exec -T db psql -U pokemon_admin -c "CREATE DATABASE IF NOT EXISTS pokemon_trading_test;"
+      working-directory: backend
 
-    - name: Run Tests
+    - name: Sync Test Database
+      run: |
+        echo "Sincronizando la base de datos..."
+        docker-compose exec -T app yarn sync:test
+      working-directory: backend
+
+    - name: Run Tests in Docker
       run: cd backend && yarn docker:test
 
     - name: Cleanup Docker Containers
