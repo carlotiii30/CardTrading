@@ -1,38 +1,30 @@
-name: Integración Continua
+name: CI
 
 on:
   push:
     branches:
       - main
-      - feature/hito4 # Asegúrate de incluir la rama que estás probando
   pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: ['lts/-1', 'lts/*', 'current']
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '14'
 
-    - name: Install Docker Compose
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-compose
+    - name: Install dependencies
+      run: yarn install
 
-    - name: Install Dependencies
-      run: cd backend && yarn install
-
-    - name: Start Docker Containers
+    - name: Start Docker containers
       run: cd backend && yarn docker:start
 
     - name: Wait for PostgreSQL
@@ -48,7 +40,7 @@ jobs:
     - name: Create Test Database
       run: |
         echo "Creando la base de datos de prueba..."
-        docker-compose exec -T db psql -U pokemon_admin -c "CREATE DATABASE IF NOT EXISTS pokemon_trading_test;"
+        docker-compose exec -T db psql -U pokemon_admin -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'pokemon_trading_test') THEN CREATE DATABASE pokemon_trading_test; END IF; END \$\$;"
       working-directory: backend
 
     - name: Sync Test Database
