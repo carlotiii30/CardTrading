@@ -46,6 +46,7 @@ afterAll(async () => {
 });
 
 describe("Cards API", () => {
+  describe("POST /api/cards/createCard", () => {
     it("should return 401 if user is not authenticated", async () => {
       const response = await request(app)
         .post("/api/cards/createCard")
