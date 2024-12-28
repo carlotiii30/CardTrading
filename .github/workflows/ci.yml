@@ -1,4 +1,4 @@
-name: Integración Continua
+name: CI
 
 on:
   push:
@@ -44,7 +44,7 @@ jobs:
     - name: Create Test Database
       run: |
         echo "Creando la base de datos de prueba..."
-        docker-compose exec -T db psql -U pokemon_admin -c "CREATE DATABASE IF NOT EXISTS pokemon_trading_test;"
+        docker-compose exec -T db psql -U pokemon_admin -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'pokemon_trading_test') THEN CREATE DATABASE pokemon_trading_test; END IF; END \$\$;"
       working-directory: backend
 
     - name: Sync Test Database
