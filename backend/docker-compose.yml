@@ -51,6 +51,7 @@ services:
       POSTGRES_DB: pokemon_trading
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./init_db:/docker-entrypoint-initdb.d
     networks:
       - app_network
     restart: always
