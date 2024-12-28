@@ -23,12 +23,26 @@ jobs:
     - name: Install Docker Compose
       run: |
         sudo apt-get update
-        sudo apt-get install -y docker-compose
+        sudo apt-get install -y docker-compose-plugin
 
     - name: Install Dependencies
       run: cd backend && yarn install
 
-    - name: Run Tests in Docker
+    - name: Start Docker Services
+      run: cd backend && yarn docker:start
+
+    - name: Wait for PostgreSQL to be Ready
+      run: |
+        cd backend
+        until docker-compose exec db pg_isready -U pokemon_admin -d pokemon_trading_test; do
+          echo "Waiting for PostgreSQL..."
+          sleep 5
+        done
+
+    - name: Sync Database
+      run: cd backend && docker-compose exec app yarn sync:db
+
+    - name: Run Tests
       run: cd backend && yarn docker:test
 
     - name: Cleanup Docker Containers
