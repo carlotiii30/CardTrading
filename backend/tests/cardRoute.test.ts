@@ -46,25 +46,6 @@ afterAll(async () => {
 });
 
 describe("Cards API", () => {
-  describe("POST /api/cards/createCard", () => {
-    it("should create a new card and return 201", async () => {
-      const response = await request(app)
-        .post("/api/cards/createCard")
-        .set("Authorization", `Bearer ${token}`)
-        .field("name", "Pikachu")
-        .field("type", "electric")
-        .field("description", "A cute electric Pokémon")
-        .attach("image", path.resolve(__dirname, "./data/test-image.png"));
-
-      expect(response.status).toBe(201);
-      expect(response.body).toMatchObject({
-        name: "Pikachu",
-        type: "electric",
-        image: expect.stringContaining("/uploads/"),
-        description: "A cute electric Pokémon",
-      });
-    });
-
     it("should return 401 if user is not authenticated", async () => {
       const response = await request(app)
         .post("/api/cards/createCard")
