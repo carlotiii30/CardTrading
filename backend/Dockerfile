@@ -5,7 +5,7 @@ FROM node:18-slim
 WORKDIR /app
 
 # Copia solo los archivos necesarios para instalar dependencias
-COPY package.json yarn.lock ./
+COPY package.json ./
 
 # Instala las dependencias en el entorno del contenedor
 RUN yarn install --frozen-lockfile

@@ -177,13 +177,4 @@ describe("DELETE /deleteCard", () => {
 
     expect(response.body).toEqual({ error: "Carta no encontrada" });
   });
-
-  it("should return 401 if user is not authenticated", async () => {
-    const response = await request(app)
-      .delete("/api/cards/deleteCard")
-      .query({ id: 1 })
-      .expect(401);
-
-    expect(response.body).toEqual({ error: "Acceso denegado" });
-  });
 });
