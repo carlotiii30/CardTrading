@@ -43,7 +43,7 @@ La definición del proyecto, incluyendo los objetivos y requisitos, está docume
 ### Documentación
 - **Configuración del clúster de contenedores**: [composición de servicios](./docs/compose.md)
 - **Dockerfile de la aplicación**: [Dockerfile](./backend/Dockerfile)
-- **Publicación de contenedores**: Instrucciones y detalles en [contenedores](./docs/contenedores.md).
+- **Configuración y publicación de contenedores**: Instrucciones y detalles en [contenedores](./docs/contenedores.md).
 - **Fichero `docker-compose.yml`**: La configuración del clúster se encuentra en el archivo [docker-compose.yml](./docker-compose.yml).
 
 ### Código
@@ -52,3 +52,7 @@ La definición del proyecto, incluyendo los objetivos y requisitos, está docume
   - **Iniciar contenedores**: `yarn docker:start`
   - **Parar contenedores**: `yarn docker:stop`
   - **Ejecutar tests en Docker**: `yarn docker:test`
+
+
+### Paquete
+Paquetes publicados: https://github.com/users/carlotiii30/packages/container/package/cardtrading
