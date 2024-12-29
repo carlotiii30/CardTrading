@@ -1,4 +1,4 @@
-name: Publicar Contenedor en GitHub Packages
+name: Publish Docker Image to GitHub Packages
 
 on:
   push:
@@ -6,28 +6,22 @@ on:
       - main
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Log in to GitHub Packages
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker Image
+      - name: Build Docker image
         run: |
-          docker build \
-            -t ghcr.io/${{ github.repository_owner }}/cardtrading:latest \
-            -t ghcr.io/${{ github.repository_owner }}/cardtrading:${{ github.sha }} \
-            -f backend/Dockerfile \
-            backend
+          docker build -t ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest .
+          docker tag ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:$(date +'%Y%m%d%H%M%S')
 
-      - name: Push Docker Image
+      - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/cardtrading:latest
-          docker push ghcr.io/${{ github.repository_owner }}/cardtrading:${{ github.sha }}
+          docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest
+          docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:$(date +'%Y%m%d%H%M%S')
