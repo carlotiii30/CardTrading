@@ -17,6 +17,7 @@ jobs:
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
       - name: Build Docker image
+        working-directory: backend
         run: |
           docker build -t ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest .
           docker tag ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:$(date +'%Y%m%d%H%M%S')
