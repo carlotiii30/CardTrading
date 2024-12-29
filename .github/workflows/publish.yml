@@ -19,10 +19,16 @@ jobs:
       - name: Build Docker image
         working-directory: backend
         run: |
+          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           docker build -t ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest .
-          docker tag ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:$(date +'%Y%m%d%H%M%S')
+          docker tag ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:$TIMESTAMP
+
+      - name: List local Docker images
+        run: docker images
 
       - name: Push Docker image to GitHub Packages
         run: |
           docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:latest
-          docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:$(date +'%Y%m%d%H%M%S')
+          docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/cardtrading:${{ env.TIMESTAMP }}
+
