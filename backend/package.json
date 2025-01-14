@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
+    "start": "node backend/dist/app.js",
     "serve": "ts-node --files src/app.ts",
     "sync": "ts-node src/config/sync_database.ts",
     "test": "NODE_ENV=test jest --detectOpenHandles",
