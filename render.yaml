@@ -9,7 +9,8 @@ services:
       yarn
       yarn build
       ls -R dist
-    startCommand: node backend/dist/app.js
+      ls -R .
+    startCommand: node dist/app.js
     envVars:
       - key: NODE_ENV
         value: production
