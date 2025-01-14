@@ -8,11 +8,12 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "rootDir": "./src",
-    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "outDir": "./dist",
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   },
   "include": [
-    "backend/src/**/*",
-    "backend/src/types/express.d.ts"
+    "src/**/*",
+    "src/types/express.d.ts"
   ],
   "exclude": ["node_modules"]
 }

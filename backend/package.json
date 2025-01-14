@@ -6,7 +6,8 @@
   "author": "Carlota de la Vega <carlotadlavega@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node --files src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
     "sync": "ts-node src/config/sync_database.ts",
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "sync:test": "NODE_ENV=test ts-node src/config/sync_database.ts",

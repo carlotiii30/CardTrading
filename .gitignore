@@ -404,3 +404,6 @@ backend/uploads/*
 
 # Yarn
 yarn.lock
+
+# Build
+backend/dist
