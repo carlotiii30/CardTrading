@@ -4,8 +4,12 @@ services:
     env: node
     plan: free
     region: frankfurt
-    buildCommand: cd backend && yarn && yarn build
-    startCommand: cd backend && yarn start
+    buildCommand: |
+      cd backend
+      yarn
+      yarn build
+      ls -l dist
+    startCommand: node backend/dist/app.js
     envVars:
       - key: NODE_ENV
         value: production
