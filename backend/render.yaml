@@ -1,0 +1,13 @@
+services:
+  - name: card-trading-app
+    type: web
+    env: node
+    plan: free
+    region: frankfurt
+    buildCommand: yarn
+    startCommand: yarn start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
