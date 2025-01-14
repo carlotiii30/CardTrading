@@ -8,7 +8,7 @@ services:
       cd backend
       yarn
       yarn build
-    startCommand: node dist/app.js
+    startCommand: yarn start-js
     envVars:
       - key: NODE_ENV
         value: production
