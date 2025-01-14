@@ -8,7 +8,6 @@ services:
       cd backend
       yarn
       yarn build
-      ls -R dist
     startCommand: node dist/app.js
     envVars:
       - key: NODE_ENV
