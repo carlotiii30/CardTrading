@@ -6,6 +6,7 @@ Este es el repositorio del proyecto **CardTrading**, desarrollado para la asigna
 2. [Hito 2: Integración Continua](#hito-2-integración-continua)
 3. [Hito 3: Diseño de Microservicios](#hito-3-diseño-de-microservicios)
 4. [Hito 4: Composición de Servicios](#hito-4-composición-de-servicios)
+5. [Hito 5: Despliegue de la aplicación en un PaaS](#hito-5-despliegue-de-la-aplicación-en-un-paas)
 
 ---
 
@@ -56,3 +57,15 @@ La definición del proyecto, incluyendo los objetivos y requisitos, está docume
 
 ### Paquete
 Paquetes publicados: https://github.com/users/carlotiii30/packages/container/package/cardtrading
+
+
+## Hito 5: Despliegue de la aplicación en un PaaS
+### Documentación
+- **Elección del PaaS**: [paas](./docs/paas.md)
+- **Configuración de Render**: [render](./docs/render.md)
+
+### Código
+- **Configuración para Render**: [render](render.yaml)
+
+### Despliegue
+Desplegado en: https://cardtrading-srqd.onrender.com

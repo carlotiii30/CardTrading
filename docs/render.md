@@ -4,7 +4,7 @@
 ## Configuración del Archivo `render.yaml`
 El archivo `render.yaml` es utilizado para definir cómo se debe construir y ejecutar la aplicación en Render. Este archivo debe estar en la raíz del repositorio.
 
-## Cambios Realizados en el Código
+## Cambios Realizados
 
 ### **Compilar Antes de Ejecutar (Optimización de Memoria)**
 - **Problema**: Usar `ts-node` directamente para ejecutar el código TypeScript en un entorno de producción consume más memoria y puede causar errores.
@@ -22,6 +22,9 @@ Ahora, el proyecto se compila en la fase de construcción y el archivo transpila
 ### **Manejo de Variables de Entorno**
 - **Problema**: La aplicación no encontraba la configuración de la base de datos.
 - **Solución**: Se configuraron variables de entorno en Render para la conexión a la base de datos.
+
+### **Automatización**
+![Deploy](../imgs/deploy.png)
 
 ## Validación Local
 Antes de desplegar en Render, se validó el flujo localmente:
