@@ -5,8 +5,6 @@ dotenv.config();
 
 const env = process.env.NODE_ENV || "development";
 
-console.log(`Using environment: ${env}`);
-
 const databaseConfig: { [key: string]: Options } = {
   development: {
     database: process.env.DB_DATABASE || "pokemon_trading",
@@ -28,8 +26,6 @@ const databaseConfig: { [key: string]: Options } = {
   },
 };
 
-console.log(`Using database: ${databaseConfig[env].database}`);
-
 const config = databaseConfig[env];
 
 if (!config) {
@@ -47,8 +43,6 @@ const sequelize = new Sequelize(
     logging: config.logging,
   }
 );
-
-console.log(`Database host: ${config.host}`);
 
 export { sequelize };
 export default sequelize;
