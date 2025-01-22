@@ -2,6 +2,8 @@ import { Sequelize, Options } from "sequelize";
 
 const env = process.env.NODE_ENV || "development";
 
+console.log(`Using environment: ${env}`);
+
 const databaseConfig: { [key: string]: Options } = {
   development: {
     database: "pokemon_trading",
