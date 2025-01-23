@@ -5,8 +5,6 @@ dotenv.config();
 
 const env = process.env.NODE_ENV || "development";
 
-console.log(`Using environment: ${env}`);
-
 const databaseConfig: { [key: string]: Options } = {
   development: {
     database: process.env.DB_DATABASE || "pokemon_trading",
@@ -40,8 +38,6 @@ if (!config) {
   throw new Error(`No database configuration found for environment: ${env}`);
 }
 
-console.log(`Database configuration:`, config);
-
 const sequelize = new Sequelize(
   config.database as string,
   config.username as string,
@@ -54,19 +50,6 @@ const sequelize = new Sequelize(
     dialectOptions: config.dialectOptions,
   }
 );
-
-console.log(
-  `Connecting to database: ${config.database} at ${config.host}:${config.port}`
-);
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
-  });
 
 export { sequelize };
 export default sequelize;
