@@ -14,6 +14,12 @@ const databaseConfig: { [key: string]: Options } = {
     port: Number(process.env.DB_PORT) || 5432,
     dialect: "postgres",
     logging: console.log,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
   test: {
     database: process.env.TEST_DB_DATABASE || "pokemon_trading_test",
