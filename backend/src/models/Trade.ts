@@ -37,7 +37,6 @@ Trade.init(
   {
     sequelize,
     modelName: "trades",
-    tableName: "trades",
   }
 );
 
