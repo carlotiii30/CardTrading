@@ -36,7 +36,7 @@ Trade.init(
   },
   {
     sequelize,
-    modelName: "Trade",
+    modelName: "trades",
   }
 );
 
