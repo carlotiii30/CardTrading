@@ -26,6 +26,7 @@ User.init(
   {
     sequelize,
     modelName: "users",
+    tableName: "users",
   }
 );
 
