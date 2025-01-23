@@ -35,8 +35,7 @@ Card.init(
   },
   {
     sequelize,
-    modelName: "cards",
-    tableName: "cards",
+    modelName: "Card",
   }
 );
 
