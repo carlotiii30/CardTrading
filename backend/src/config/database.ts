@@ -1,23 +1,32 @@
 import { Sequelize, Options } from "sequelize";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const env = process.env.NODE_ENV || "development";
 
 const databaseConfig: { [key: string]: Options } = {
   development: {
-    database: "pokemon_trading",
-    username: "pokemon_admin",
-    password: "Pokemon",
-    host: "db",
-    port: 5432,
+    database: process.env.DB_DATABASE || "pokemon_trading",
+    username: process.env.DB_USERNAME || "pokemon_admin",
+    password: process.env.DB_PASSWORD || "Pokemon",
+    host: process.env.DB_HOST || "db",
+    port: Number(process.env.DB_PORT) || 5432,
     dialect: "postgres",
     logging: console.log,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
   test: {
-    database: "pokemon_trading_test",
-    username: "pokemon_admin",
-    password: "Pokemon",
-    host: "db",
-    port: 5432,
+    database: process.env.TEST_DB_DATABASE || "pokemon_trading_test",
+    username: process.env.TEST_DB_USERNAME || "pokemon_admin",
+    password: process.env.TEST_DB_PASSWORD || "Pokemon",
+    host: process.env.TEST_DB_HOST || "db",
+    port: Number(process.env.TEST_DB_PORT) || 5432,
     dialect: "postgres",
     logging: false,
   },
@@ -38,6 +47,7 @@ const sequelize = new Sequelize(
     port: config.port,
     dialect: config.dialect,
     logging: config.logging,
+    dialectOptions: config.dialectOptions,
   }
 );
 

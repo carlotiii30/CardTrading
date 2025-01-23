@@ -33,10 +33,21 @@ Trade.init(
       allowNull: false,
       defaultValue: "pending",
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     sequelize,
     modelName: "Trade",
+    tableName: "trades",
   }
 );
 
