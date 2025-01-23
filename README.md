@@ -63,6 +63,7 @@ Paquetes publicados: https://github.com/users/carlotiii30/packages/container/pac
 ### Documentación
 - **Elección del PaaS**: [paas](./docs/paas.md)
 - **Configuración de Render**: [render](./docs/render.md)
+- **Configuración de la BD**: [base de datos](./docs/bd.md)
 
 ### Código
 - **Configuración para Render**: [render](render.yaml)
